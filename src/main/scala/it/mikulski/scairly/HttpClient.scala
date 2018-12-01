@@ -27,6 +27,7 @@ class HttpClient(apiKey: String)(implicit val system: ActorSystem) {
     for {
       response <- http.singleRequest(request)
       parsed <- unmarshaller.apply(decode(response))
+      _ = printLimits(response) // TODO get rid of this
     } yield parsed
   }
 
@@ -42,6 +43,12 @@ class HttpClient(apiKey: String)(implicit val system: ActorSystem) {
     for {
       bs <- decode(response).entity.dataBytes.runFold(ByteString(""))(_ ++ _)
     } yield bs.utf8String
+  }
+
+  // TODO for development only, fix optional handling
+  private def printLimits(response: HttpResponse): Unit = {
+    println("remaining per day: " + response.getHeader("X-RateLimit-Remaining-day").get().value())
+    println("remaining per min: " + response.getHeader("X-RateLimit-Remaining-minute").get().value())
   }
 
 }
