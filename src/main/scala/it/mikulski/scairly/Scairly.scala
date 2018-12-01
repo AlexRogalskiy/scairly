@@ -2,8 +2,6 @@ package it.mikulski.scairly
 
 class Scairly(apiKey: String) {
 
-  type InstallationId = String
-
   def getInstallation(id: InstallationId): Installation = ???
 
   def getNearestInstallations(latitude: Double, longitude: Double, maxDistance: Option[Double], maxResults: Option[Double]): Seq[Installation] = ???
