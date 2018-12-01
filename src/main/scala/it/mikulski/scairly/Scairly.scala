@@ -1,11 +1,12 @@
 package it.mikulski.scairly
 
-import akka.actor.ActorSystem
+import akka.actor.{ ActorSystem, Terminated }
 import akka.stream.ActorMaterializer
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.generic.auto._
 
-import scala.concurrent.Future
+import scala.concurrent.duration._
+import scala.concurrent.{ Await, Future }
 
 class Scairly(apiKey: String) extends FailFastCirceSupport {
 
@@ -29,5 +30,7 @@ class Scairly(apiKey: String) extends FailFastCirceSupport {
   def getNearestMeasurements(latitude: Double, longitude: Double, maxDistance: Option[Double]): Measurements = ???
 
   def getInterpolatedMeasurements(latitude: Double, longitude: Double): Measurements = ???
+
+  def close(): Terminated = Await.result(system.terminate(), 15.seconds)
 
 }
