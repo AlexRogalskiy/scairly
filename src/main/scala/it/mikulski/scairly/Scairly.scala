@@ -31,6 +31,9 @@ class Scairly(apiKey: String) extends FailFastCirceSupport {
 
   def getInterpolatedMeasurements(latitude: Double, longitude: Double): Measurements = ???
 
-  def close(): Terminated = Await.result(system.terminate(), 15.seconds)
+  def close(): Terminated = Await.result(for {
+    _ <- http.close()
+    res <- system.terminate()
+  } yield res, 15.seconds)
 
 }

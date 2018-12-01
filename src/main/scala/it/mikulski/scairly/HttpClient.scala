@@ -31,6 +31,8 @@ class HttpClient(apiKey: String)(implicit val system: ActorSystem) {
     } yield parsed
   }
 
+  def close(): Future[Unit] = http.shutdownAllConnectionPools()
+
   private def decode(response: HttpResponse): HttpResponse = {
     val decoder = response.encoding match {
       case HttpEncodings.gzip ⇒ Gzip
