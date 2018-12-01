@@ -17,8 +17,7 @@ class HttpClient(apiKey: String)(implicit val system: ActorSystem) {
 
   val baseUrl = "https://airapi.airly.eu/v2/"
 
-  def get[T](path: String, params: Map[String, Any])
-    (implicit unmarshaller: Unmarshaller[HttpResponse, T], ec: ExecutionContext, mat: ActorMaterializer): Future[T] = {
+  def get[T](path: String, params: Map[String, Any])(implicit unmarshaller: Unmarshaller[HttpResponse, T], ec: ExecutionContext, mat: ActorMaterializer): Future[T] = {
     val query = params.map(p => s"${p._1}=${p._2}").mkString("&")
     val request = HttpRequest(HttpMethods.GET, uri = Uri(s"$baseUrl$path?$query"))
       .addHeader(RawHeader("apikey", apiKey))
