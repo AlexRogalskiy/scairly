@@ -8,9 +8,10 @@ case class Measurements(current: AveragedValues, history: AveragedValues, foreca
 
 case class Location(latitude: Double, longitude: Double)
 
-case class Address(country: String, city: String, street: String, number: String, displayAddress1: String, displayAddress2: String)
+case class Address(country: Option[String], city: Option[String], street: Option[String], number: Option[String],
+  displayAddress1: Option[String], displayAddress2: Option[String])
 
-case class Sponsor(name: String, description: String, logo: String, link: String)
+case class Sponsor(name: String, description: Option[String], logo: Option[String], link: Option[String])
 
 case class AveragedValues(fromDateTime: Instant, tillDateTime: Instant, values: Seq[Value], indexes: Seq[Index], standards: Seq[Standard])
 
