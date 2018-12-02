@@ -4,7 +4,7 @@ import java.time.Instant
 
 case class Installation(id: InstallationId, location: Location, address: Address, elevation: Double, airly: Boolean, sponsor: Sponsor)
 
-case class Measurements(current: AveragedValues, history: AveragedValues, forecast: AveragedValues)
+case class Measurements(current: AveragedValues, history: Seq[AveragedValues], forecast: Seq[AveragedValues])
 
 case class Location(latitude: Double, longitude: Double)
 

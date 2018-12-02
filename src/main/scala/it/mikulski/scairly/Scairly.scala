@@ -16,7 +16,9 @@ class Scairly(apiKey: String) extends FailFastCirceSupport {
 
   val http = new HttpClient(apiKey)
 
-  def getInstallation(id: InstallationId): Installation = ???
+  def getInstallation(id: InstallationId): Future[Installation] = {
+    http.get[Installation](s"installations/$id", Map.empty)
+  }
 
   def getNearestInstallations(latitude: Double, longitude: Double, maxDistance: Option[Double], maxResults: Option[Int]): Future[Seq[Installation]] = {
     val d = maxDistance.getOrElse(3.0)
@@ -25,11 +27,18 @@ class Scairly(apiKey: String) extends FailFastCirceSupport {
     http.get[Seq[Installation]]("installations/nearest", params)
   }
 
-  def getMeasurements(installationId: InstallationId): Measurements = ???
+  def getMeasurements(installationId: InstallationId): Future[Measurements] = {
+    http.get[Measurements](s"measurements/installation", Map("installationId" -> installationId))
+  }
 
-  def getNearestMeasurements(latitude: Double, longitude: Double, maxDistance: Option[Double]): Measurements = ???
+  def getNearestMeasurements(latitude: Double, longitude: Double, maxDistance: Option[Double]): Future[Measurements] = {
+    val d = maxDistance.getOrElse(3.0)
+    http.get[Measurements](s"measurements/nearest", Map("lat" -> latitude, "lng" -> longitude, "maxDistanceKM" -> d))
+  }
 
-  def getInterpolatedMeasurements(latitude: Double, longitude: Double): Measurements = ???
+  def getInterpolatedMeasurements(latitude: Double, longitude: Double): Future[Measurements] = {
+    http.get[Measurements](s"measurements/point", Map("lat" -> latitude, "lng" -> longitude))
+  }
 
   def close(): Terminated = Await.result(for {
     _ <- http.close()
