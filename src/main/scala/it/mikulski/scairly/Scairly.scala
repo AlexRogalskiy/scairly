@@ -20,10 +20,8 @@ class Scairly(apiKey: String) extends FailFastCirceSupport {
     http.get[Installation](s"installations/$id", Map.empty)
   }
 
-  def getNearestInstallations(latitude: Double, longitude: Double, maxDistance: Option[Double], maxResults: Option[Int]): Future[Seq[Installation]] = {
-    val d = maxDistance.getOrElse(3.0)
-    val r = maxResults.getOrElse(1)
-    val params = Map("lat" -> latitude, "lng" -> longitude, "maxDistanceKM" -> d, "maxResults" -> r)
+  def getNearestInstallations(latitude: Double, longitude: Double, maxDistance: Double = 3.0, maxResults: Int = 1): Future[Seq[Installation]] = {
+    val params = Map("lat" -> latitude, "lng" -> longitude, "maxDistanceKM" -> maxDistance, "maxResults" -> maxResults)
     http.get[Seq[Installation]]("installations/nearest", params)
   }
 
