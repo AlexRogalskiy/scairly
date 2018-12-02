@@ -11,7 +11,7 @@ TODO: bintray deployment
 ### Basic Usage
 
 To use the client, you need to register at https://developer.airly.eu and receive an API key, which you later provide
-to your `Scairly` instance
+to your `Scairly` instance:
 
 ```scala
 import it.mikulski.scairly.Scairly
@@ -28,3 +28,8 @@ scairly.getNearestInstallations(coord._1, coord._2, maxResults = 5).onComplete {
   scairly.close()
 }
 ```
+
+### License
+
+Scairly itself is free for both personal and commercial use, as per Apache License 2.0. However, keep in mind
+that in order to use airly.eu's API, you need to comply with their [Terms of Service](https://airly.eu/docs/tos-en.pdf).
