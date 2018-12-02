@@ -10,12 +10,21 @@ TODO: bintray deployment
 
 ### Basic Usage
 
+To use the client, you need to register at https://developer.airly.eu and receive an API key, which you later provide
+to your `Scairly` instance
+
 ```scala
 import it.mikulski.scairly.Scairly
 
 val scairly = new Scairly("MY_API_KEY")
 
-for {
-  installations = scairly.getNearestInstallations(50.0616719, 19.9374332)
-} installations.foreach(println)
+scairly.getNearestInstallations(coord._1, coord._2, maxResults = 5).onComplete { response =>
+  response match {
+    case Success(installations) =>
+      installations.foreach(println)
+    case Failure(e) =>
+      println(s"exception occurred: $e")
+  }
+  scairly.close()
+}
 ```
